@@ -33,3 +33,11 @@ https://www.steamwebapi.com/steam/api/inventory?key=SAR2GOHT4LEVIOTW&steam_id=76
 
 Item :
 https://www.steamwebapi.com/steam/api/item?key=SAR2GOHT4LEVIOTW&market_hash_name=Gamma Case&game=csgo
+
+
+
+
+documentations : 
+
+https://www.steamwebapi.com/api/steam/documentation
+https://developer.valvesoftware.com/wiki/Steam_Web_API
