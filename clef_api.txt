@@ -1,1 +1,3 @@
 847C531FE8FB222847926854D016ABA7
+
+http://api.steampowered.com/<interface name>/<method name>/v<version>/?key=847C531FE8FB222847926854D016ABA7&format=json
