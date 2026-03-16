@@ -27,7 +27,7 @@ SAR2GOHT4LEVIOTW
 
 Par Pseudo :
 
-https://www.steamwebapi.com/explore/api/profile?key=YOUR_API_KEY&search=PSEUDO
+https://www.steamwebapi.com/explore/api/profile?key=SAR2GOHT4LEVIOTW&search=PSEUDO
 
 Profile :
 https://www.steamwebapi.com/steam/api/profile?key=SAR2GOHT4LEVIOTW&steam_id=76561198311955195
@@ -45,3 +45,37 @@ documentations :
 
 https://www.steamwebapi.com/api/steam/documentation
 https://developer.valvesoftware.com/wiki/Steam_Web_API
+
+Exemples réponses : 
+
+
+https://www.steamwebapi.com/explore/api/profile?key=SAR2GOHT4LEVIOTW&search=Yume_88
+
+[
+    {
+        "steamid": "76561198817764054",
+        "accountname": "76561198817764054",
+        "personaname": "Yume_88",
+        "displayname": null,
+        "profiletype": null,
+        "realname": null,
+        "loccountrycode": "FR",
+        "description": null,
+        "fame": 0,
+        "vac": 0,
+        "islimited": false,
+        "level": null,
+        "worth": 0,
+        "worthsteam": 0,
+        "size": 0,
+        "peritem": null,
+        "totalplaytime": 1245.3,
+        "playtimerecent": 99.6,
+        "timecreated": "2018-02-24T00:00:00+00:00",
+        "updatedat": "2026-03-12T10:30:45+00:00",
+        "inventoryupdatedat": null,
+        "avatar": "https://avatars.steamstatic.com/97e463a36f2693f6158631fb69c4074694019c20.jpg",
+        "avatarmedium": "https://avatars.steamstatic.com/97e463a36f2693f6158631fb69c4074694019c20_medium.jpg",
+        "avatarfull": "https://avatars.steamstatic.com/97e463a36f2693f6158631fb69c4074694019c20_full.jpg"
+    }
+]

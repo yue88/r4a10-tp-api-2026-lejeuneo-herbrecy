@@ -12,11 +12,9 @@
       <h1>Recherche d'offres d'emploi</h1>
 
       <p id="explication">
-        Cette page permet de rechercher des offres d'emploi via l'API publique
-        de <a href="https://www.indeed.fr/" target="_blank">indeed.fr</a>.<br />
-        Saisir le nom d'une ville, d'un poste, ... pour rechercher les postes
-        correspondants, et enregistrer vos recherches favorites pour les
-        retrouver facilement.
+        Cette page permet de rechercher les informations d'un compte steam
+        de <a href="https://steamcommunity.com/" target="_blank">steamcommunity.com</a>.<br />
+        Saisir le pseudo d'un joueur et enregistrez vos recherches favorites pour les retrouver facilement.
       </p>
     </header>
     <hr />
@@ -26,11 +24,12 @@
       <section id="section-recherche">
         <div id="bloc-recherche">
           <!-- Champ de recherche -->
-          <input type="text" placeholder="Que cherchez-vous ?" />
+          <input type="text" placeholder="Pseudo à rechercher" />
 
           <!-- Boutons -->
           <button
             id="btn-lancer-recherche"
+            disabled
             type="button"
             class="btn_clicable"
             title="Lancer la recherche"
@@ -47,11 +46,11 @@
           >
             <!-- Icone étoile vide
 							(qui indique que la recherche ne fait pas partie des favoris) -->
-            <img src="images/etoile-vide.svg" alt="Etoile vide" width="22" />
+            <img src="images/etoile-vide.svg" alt="Etoile favoris" width="22" id="etoile"/>
 
             <!-- Icone étoile pleine
 								(qui indique que la recherche fait partie des favoris) -->
-            <!-- <img src="images/etoile-pleine.svg" alt="Etoile pleine" width="22" > -->
+            <!-- Icone étoile pleine <img src="images/etoile-pleine.svg" alt="Etoile pleine" width="22" id="etoile-pleine"/> -->
 
             <!-- (Les 2 icones d'étoile provenant de flaticon.com) -->
           </button>
@@ -114,5 +113,7 @@
         <p class="info-vide">(Aucune recherche favorite)</p>
       </section>
     </main>
+
+    <script type="module" src="main.js"></script>
   </body>
 </html>
