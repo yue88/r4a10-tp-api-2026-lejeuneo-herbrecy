@@ -21,27 +21,20 @@ view.champRecherche.addEventListener("keyup", (evt) => {
 
 // Permet de faire l'appel API lors du clique sur la loupe
 
-view.btnLancerRecherche.addEventListener("click", function () {
+view.btnLancerRecherche.addEventListener("click", async function () {
 
   const recherche = view.champRecherche.value.trim();
 
-  const url = `https://www.steamwebapi.com/explore/api/profile?key=SAR2GOHT4LEVIOTW&search=${encodeURIComponent(recherche)}`;
+  const url = `https://www.steamwebapi.com/explore/api/profile?key=SAR2GOHT4LEVIOTW&search=${recherche}`;
 
-  fetch(url)
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    return response.json();
-  })
-  .then((data) => {
-    console.log('Data fetched:', data);
-  })
-  .catch((error) => {
-    console.error('Fetch error:', error);
+  fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`)
+    .then(response => {
+      if (response.ok) return response.json()
+      throw new Error('Network response was not ok.')
+    })
+    .then(data => console.log(data.contents));
+
   });
-
-});
 
 // Permet de mettre en favoris
 
