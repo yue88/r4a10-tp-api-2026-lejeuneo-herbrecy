@@ -42,7 +42,7 @@ export function afficherJeuxProposes(jeux) {
 
 export async function afficherTop3Cat(categories) {
 
-    let compteur = 1;
+  let compteur = 1;
   for (const [nom, data] of categories) {
 
     const bloc = document.querySelector(`#categorie-${compteur}`);
@@ -52,10 +52,13 @@ export async function afficherTop3Cat(categories) {
     const titre = bloc.querySelector(".cat-titre");
     titre.textContent = nom;
 
-    const url = `https://store.steampowered.com/search/results/?json=1&filter=topsellers&category1=${data.id}&supportedlang=french&hidef2p=1&page=1`;
-
     try {
-      const response = await fetch(url);
+      const response = await fetch(`api.php?action=top-category&genre=${encodeURIComponent(nom)}`);
+
+      if (!response.ok) {
+        throw new Error("Le backend n'a pas pu recuperer la categorie.");
+      }
+
       const dataApi = await response.json();
 
       const items = dataApi.items || [];

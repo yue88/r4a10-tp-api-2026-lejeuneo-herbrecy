@@ -59,21 +59,13 @@ view.listeFavoris.addEventListener("click", function (event) {
 
 
 async function recupererJeux(steamId) {
-const url = `https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=847C531FE8FB222847926854D016ABA7&steamid=${steamId}&include_appinfo=true&include_played_free_games=true`;
-
-  const response = await fetch(
-    `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`
-  );
+  const response = await fetch(`api.php?action=owned-games&steamid=${encodeURIComponent(steamId)}`);
 
   if (!response.ok) {
-    throw new Error("Le proxy AllOrigins a echoue.");
+    throw new Error("Le backend n'a pas pu recuperer les jeux.");
   }
 
-  const data = await response.json();
-
-  const vraiJSON = JSON.parse(data.contents);
-
-  return vraiJSON;
+  return await response.json();
 }
 
 
@@ -81,20 +73,13 @@ const url = `https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=8
 
 
 async function recupererProfil(steamId) {
-  const url = `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=847C531FE8FB222847926854D016ABA7&steamids=${steamId}`;
-
-  const response = await fetch(
-    `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`
-  );
+  const response = await fetch(`api.php?action=profile&steamid=${encodeURIComponent(steamId)}`);
 
   if (!response.ok) {
-    throw new Error("Le proxy AllOrigins a echoue.");
+    throw new Error("Le backend n'a pas pu recuperer le profil.");
   }
 
-  const data = await response.json();
-  const vraiJSON = JSON.parse(data.contents);
-
-  return vraiJSON.response.players[0] || null;
+  return await response.json();
 }
 
 
@@ -103,20 +88,13 @@ async function recupererProfil(steamId) {
 
 
 async function recupererDetailsJeu(appid) {
-  const url = `https://store.steampowered.com/api/appdetails?appids=${appid}&l=french`;
-
-  const response = await fetch(
-    `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`
-  );
+  const response = await fetch(`api.php?action=app-details&appid=${encodeURIComponent(appid)}`);
 
   if (!response.ok) {
-    throw new Error("Le proxy AllOrigins a echoue.");
+    throw new Error("Le backend n'a pas pu recuperer les details du jeu.");
   }
 
-  const data = await response.json();
-  const vraiJSON = JSON.parse(data.contents);
-
-  return vraiJSON[appid].data;
+  return await response.json();
 }
 
 
@@ -157,14 +135,12 @@ view.btnLancerRecherche.addEventListener("click", async function () {
 
       if (details.genres && details.genres.length > 0) {
         const categoriePrincipale = details.genres[0].description;
-        const categorieId = details.genres[0].id;
 
         if (occurrencesCategories[categoriePrincipale]) {
           occurrencesCategories[categoriePrincipale].count++;
         } else {
           occurrencesCategories[categoriePrincipale] = {
-            count: 1,
-            idCategorie: categorieId
+            count: 1
           };
         }
       }
