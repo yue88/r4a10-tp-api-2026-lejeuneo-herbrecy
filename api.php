@@ -78,12 +78,24 @@ try {
             $tagId = $genreToTag[normalizeGenre($genre)] ?? null;
 
             if ($tagId === null) {
-                respond(['items' => []]);
+                respond(fetchTopSellers());
             }
 
-            respond(fetchJson(
+            $payload = fetchJson(
                 "https://store.steampowered.com/search/results/?json=1&filter=topsellers&category1=998&tags={$tagId}&supportedlang=french&hidef2p=1&page=1"
-            ));
+            );
+
+            if (empty($payload['items'])) {
+                $payload = fetchJson(
+                    "https://store.steampowered.com/search/results/?json=1&filter=topsellers&category1=998&tags={$tagId}&page=1"
+                );
+            }
+
+            if (empty($payload['items'])) {
+                $payload = fetchTopSellers();
+            }
+
+            respond($payload);
             break;
 
         default:
@@ -135,6 +147,13 @@ function respond($payload): void
 {
     echo json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     exit;
+}
+
+function fetchTopSellers(): array
+{
+    return fetchJson(
+        "https://store.steampowered.com/search/results/?json=1&filter=topsellers&category1=998&page=1"
+    );
 }
 
 function normalizeGenre(string $genre): string

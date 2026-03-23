@@ -66,6 +66,7 @@ export async function afficherTop3Cat(categories) {
   reinitialiserCategories();
 
   let compteur = 0;
+  const jeuxDejaAffiches = new Set();
 
   for (const [nom] of categories) {
     const bloc = view.categories[compteur];
@@ -91,16 +92,30 @@ export async function afficherTop3Cat(categories) {
       const items = dataApi.items || [];
       container.innerHTML = "";
 
-      if (items.length === 0) {
+      const itemsUniques = items.filter((jeu) => {
+        const appId = jeu.id ?? jeu.appid ?? null;
+        const cle = appId ? `appid-${appId}` : `name-${(jeu.name || "").toLowerCase()}`;
+
+        if (jeuxDejaAffiches.has(cle)) {
+          return false;
+        }
+
+        jeuxDejaAffiches.add(cle);
+        return true;
+      });
+
+      const itemsAffiches = itemsUniques.length > 0 ? itemsUniques : items;
+
+      if (itemsAffiches.length === 0) {
         container.innerHTML = `<p class="cat-vide">Aucun jeu trouve pour cette categorie.</p>`;
         continue;
       }
 
-      items.slice(0, 5).forEach((jeu) => {
+      itemsAffiches.slice(0, 5).forEach((jeu) => {
         const appId = jeu.id ?? jeu.appid ?? null;
         const imageUrl = appId
           ? `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg`
-          : jeu.logo;
+          : jeu.logo ?? "";
         const lienSteam = appId
           ? `https://store.steampowered.com/app/${appId}`
           : `https://store.steampowered.com/search/?term=${encodeURIComponent(jeu.name)}`;
