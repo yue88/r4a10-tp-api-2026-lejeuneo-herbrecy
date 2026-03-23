@@ -52,12 +52,16 @@ view.btnLancerRecherche.addEventListener("click", async function () {
       new Jeu(
         jeu.appid,
         jeu.name,
-        jeu.playtime_forever,
-        jeu.img_icon_url
+        jeu.playtime_forever
       )
     );
 
-    console.log(jeuxPossedes);
+    const top15Jeux = jeuxPossedes
+      .filter((jeu) => jeu.getPlaytimeforever() > 0)
+      .sort((a, b) => b.getPlaytimeforever() - a.getPlaytimeforever())
+      .slice(0, 15);
+
+    console.log(top15Jeux);
 
   } catch (error) {
     console.error("Erreur API :", error);
