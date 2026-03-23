@@ -78,7 +78,7 @@ try {
             $tagId = $genreToTag[normalizeGenre($genre)] ?? null;
 
             if ($tagId === null) {
-                respond(fetchTopSellers());
+                respond(enrichSearchItems(fetchTopSellers()));
             }
 
             $payload = fetchJson(
@@ -95,7 +95,7 @@ try {
                 $payload = fetchTopSellers();
             }
 
-            respond($payload);
+            respond(enrichSearchItems($payload));
             break;
 
         default:
@@ -154,6 +154,27 @@ function fetchTopSellers(): array
     return fetchJson(
         "https://store.steampowered.com/search/results/?json=1&filter=topsellers&category1=998&page=1"
     );
+}
+
+function enrichSearchItems(array $payload): array
+{
+    $items = $payload['items'] ?? [];
+
+    foreach ($items as &$item) {
+        $appId = $item['id'] ?? $item['appid'] ?? null;
+
+        if ($appId !== null) {
+            $item['image_url'] = "https://cdn.cloudflare.steamstatic.com/steam/apps/{$appId}/header.jpg";
+            $item['steam_url'] = "https://store.steampowered.com/app/{$appId}";
+        } else {
+            $item['image_url'] = $item['logo'] ?? '';
+            $item['steam_url'] = "https://store.steampowered.com/search/?term=" . rawurlencode((string) ($item['name'] ?? ''));
+        }
+    }
+
+    $payload['items'] = $items;
+
+    return $payload;
 }
 
 function normalizeGenre(string $genre): string

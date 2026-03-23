@@ -112,13 +112,8 @@ export async function afficherTop3Cat(categories) {
       }
 
       itemsAffiches.slice(0, 5).forEach((jeu) => {
-        const appId = jeu.id ?? jeu.appid ?? null;
-        const imageUrl = appId
-          ? `https://cdn.cloudflare.steamstatic.com/steam/apps/${appId}/header.jpg`
-          : jeu.logo ?? "";
-        const lienSteam = appId
-          ? `https://store.steampowered.com/app/${appId}`
-          : `https://store.steampowered.com/search/?term=${encodeURIComponent(jeu.name)}`;
+        const imageUrl = jeu.image_url || jeu.logo || "";
+        const lienSteam = jeu.steam_url || `https://store.steampowered.com/search/?term=${encodeURIComponent(jeu.name)}`;
 
         container.innerHTML += `
           <article class="carte-jeu">
