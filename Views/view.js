@@ -2,18 +2,17 @@
  * Objet constant représentant la vue.
  */
 export const view = {
-  
+  btnLancerRecherche: document.querySelector("#btn-lancer-recherche"),
 
-    btnLancerRecherche: document.querySelector("#btn-lancer-recherche"),
+  champRecherche: document.querySelector("#section-recherche input[type=text]"),
 
-    champRecherche: document.querySelector("#section-recherche input[type=text]"),
+  btnFavoris: document.querySelector("#btn-favoris"),
 
-    btnFavoris: document.querySelector("#btn-favoris"),
+  etoileFavoris: document.querySelector("#etoile"),
 
-    etoileFavoris: document.querySelector("#etoile"),
+  blocResultats: document.querySelector("#bloc-resultats"),
 
-    blocResultats: document.querySelector("#bloc-resultats")
-
+  listeFavoris: document.querySelector("#liste-favoris")
 };
 
 
@@ -33,4 +32,20 @@ export function afficherJeuxProposes(jeux) {
             </article>
     `;
     });
+}
+
+
+export function afficherFavoris(fav) {
+  view.listeFavoris.innerHTML = "";
+
+  fav.forEach((profil) => {
+    view.listeFavoris.innerHTML += `
+      <li data-steamid="${profil.steamid}">
+        <span class="fav-item">
+          <img src="${profil.avatarfull}" alt="Avatar de ${profil.personaname}" width="32" height="32">
+          <span class="nom-profil-fav">${profil.personaname}</span>
+        </span>
+      </li>
+    `;
+  });
 }
