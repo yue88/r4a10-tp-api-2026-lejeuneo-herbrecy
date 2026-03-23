@@ -22,12 +22,17 @@ view.champRecherche.addEventListener("keyup", (evt) => {
 // Permet de faire l'appel API lors du clique sur la loupe
 
 async function recupererJeux(steamId) {
-  const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=847C531FE8FB222847926854D016ABA7&steamid=${steamId}&include_appinfo=true&include_played_free_games=true`)}`)
-                    .then(response => {
-                      if (response.ok) return response.json()
-                      throw new Error('Network response was not ok.')
-                    })
-                    .then(data => console.log(data.contents));
+  const response = await fetch(
+    `https://api.allorigins.win/get?url=${encodeURIComponent(
+      `https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=...&steamid=${steamId}&include_appinfo=true&include_played_free_games=true`
+    )}`
+  );
+
+  const data = await response.json();
+
+  const vraiJSON = JSON.parse(data.contents);
+
+  return vraiJSON;
 }
 
 view.btnLancerRecherche.addEventListener("click", async function () {
@@ -37,19 +42,19 @@ view.btnLancerRecherche.addEventListener("click", async function () {
   try {
     const reponseTotaleParId = await recupererJeux(steamId);
 
-    if (!reponseTotaleParId.response || Object.keys(reponseTotaleParId.response).length === 0) {
-      console.log("ID invalide ou aucun jeu");
-      return;
-    }
+  if (!reponseTotaleParId || !reponseTotaleParId.response) {
+    console.log("ID invalide ou aucun jeu");
+    return;
+  }
 
-    const jeuxPossedes = reponseTotaleParId.response.games.map(jeu =>
-      new Jeu(
-        jeu.appid,
-        jeu.name,
-        jeu.playtime_forever,
-        jeu.img_icon_url
-      )
-    );
+  const jeuxPossedes = reponseTotaleParId.response.games.map(jeu =>
+    new Jeu(
+      jeu.appid,
+      jeu.name,
+      jeu.playtime_forever,
+      jeu.img_icon_url
+    )
+  );
 
     console.log(jeuxPossedes);
 
