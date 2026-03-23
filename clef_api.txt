@@ -31,6 +31,8 @@ info sur le jeu
 https://store.steampowered.com/api/appdetails?appids=APPID&l=french
 
 
+recherche des jeux d'actions :
+https://store.steampowered.com/search/results/?json=1&filter=topsellers&category1=998&tags=19&supportedlang=french&hidef2p=1&page=1
 
 //----------------------------SteamWebAPI-----------------------------//
 
