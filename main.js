@@ -81,3 +81,51 @@ view.btnFavoris.addEventListener("click", function () {
 
 
 
+
+import { afficherJeuxProposes } from "./Views/view.js";
+
+const jeuxTest = [
+  {
+    appid: 570,
+    name: "Dota 2",
+    categorie: "MOBA"
+  },
+  {
+    appid: 730,
+    name: "Counter-Strike 2",
+    categorie: "FPS"
+  },
+  {
+    appid: 440,
+    name: "Team Fortress 2",
+    categorie: "Action"
+  },
+  {
+    appid: 440,
+    name: "Team Fortress 2",
+    categorie: "Action"
+  },
+  {
+    appid: 440,
+    name: "Team Fortress 2",
+    categorie: "Action"
+  },
+  {
+    appid: 440,
+    name: "Team Fortress 2",
+    categorie: "Action"
+  },
+  {
+    appid: 440,
+    name: "Team Fortress 2",
+    categorie: "Action"
+  },
+  {
+    appid: 440,
+    name: "Team Fortress 2",
+    categorie: "Action"
+  }
+];
+
+afficherJeuxProposes(jeuxTest);
+
