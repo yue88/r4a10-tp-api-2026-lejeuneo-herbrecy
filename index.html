@@ -8,26 +8,21 @@
   </head>
 
   <body>
-
-          <h1>Trouvez vos jeux favoris !</h1>
+    <h1>Trouvez vos jeux favoris !</h1>
 
     <header>
-
       <p id="explication">
-        Cette page est un moyen de vous recommander des jeux selon vos jeux favoris ! <br/>Grace à l'api de <a href="https://steamcommunity.com/" target="_blank">steamcommunity.com</a> ce site vous recommande des jeux selon vos jeux favoris ♥ ! <br>
+        Cette page est un moyen de vous recommander des jeux selon vos jeux favoris ! <br />Grace a l'api de <a href="https://steamcommunity.com/" target="_blank">steamcommunity.com</a> ce site vous recommande des jeux selon vos jeux favoris ! <br />
         <br><b> Saisissez votre id steam disponible dans l'url de la page de votre profil et enregistrez vos recherches favorites pour les retrouver facilement.</b>
       </p>
     </header>
     <hr/>
 
     <main id="conteneur">
-      <!-- Section de recherche (avec résultats) -->
       <section id="section-recherche">
         <div id="bloc-recherche">
-          <!-- Champ de recherche -->
-          <input type="text" placeholder="Pseudo à rechercher" />
+          <input type="text" placeholder="Pseudo a rechercher" />
 
-          <!-- Boutons -->
           <button
             id="btn-lancer-recherche"
             disabled
@@ -35,7 +30,6 @@
             class="btn_clicable"
             title="Lancer la recherche"
           >
-            <!-- Icone Loupe (provenant de flaticon.com) -->
             <img src="images/loupe.svg" alt="Loupe pour recherche" width="22" />
           </button>
 
@@ -45,35 +39,26 @@
             disabled
             title="Ajouter la recherche aux favoris"
           >
-            <!-- Icone étoile vide
-							(qui indique que la recherche ne fait pas partie des favoris) -->
             <img src="images/etoile-vide.svg" alt="Etoile favoris" width="22" id="etoile"/>
-
-            <!-- Icone étoile pleine
-								(qui indique que la recherche fait partie des favoris) -->
-            <!-- Icone étoile pleine <img src="images/etoile-pleine.svg" alt="Etoile pleine" width="22" id="etoile-pleine"/> -->
-
-            <!-- (Les 2 icones d'étoile provenant de flaticon.com) -->
           </button>
         </div>
 
-        <!-- Résultats de recherche -->
         <div id="bloc-gif-attente">
           <img
             src="images/attente-ajax.gif"
-            alt="GIF Attente de résultats"
+            alt="GIF Attente de resultats"
             width="50"
           />
         </div>
+
         <div id="bloc-resultats">
-          <p> En attente de résultats !</p>
+          <p> En attente de resultats !</p>
         </div>
+
       </section>
 
-      <!-- Section de séparation (avec la bordure verte) -->
       <section id="section-separation"></section>
 
-      <!-- Section des recherches favorites -->
       <section id="section-favoris">
         <h2>Recherches favorites</h2>
         <p>
@@ -93,6 +78,40 @@
         <p class="info-vide">(Aucune recherche favorite)</p>
       </section>
     </main>
+
+    <section class="cat-res">
+      <h2 class="cat-res-titre">Top 3 des categories</h2>
+
+      <div class="cat-tab">
+        <article class="cat-col" id="categorie-1">
+          <h3 class="cat-titre">Nom de la categorie 1</h3>
+          <div class="cat-jeux">
+
+
+          </div>
+        </article>
+
+        <div class="cat-sep"></div>
+
+        <article class="cat-col" id="categorie-2">
+          <h3 class="cat-titre">Nom de la categorie 2</h3>
+          <div class="cat-jeux">
+
+
+          </div>
+        </article>
+
+        <div class="cat-sep"></div>
+
+        <article class="cat-col" id="categorie-3">
+          <h3 class="cat-titre">Nom de la categorie 3</h3>
+          <div class="cat-jeux">
+
+            
+          </div>
+        </article>
+      </div>
+    </section>
 
     <script type="module" src="main.js"></script>
   </body>
