@@ -1,9 +1,5 @@
-import { view } from './Views/view.js';
+import { view, afficherChargement, afficherErreur, afficherFavoris, afficherJeuxProposes, afficherTop3Cat, masquerChargement, reinitialiserCategories } from "./Views/view.js";
 import { Jeu } from "./Model/modeleJeu.js";
-
-import { afficherJeuxProposes } from "./Views/view.js";
-import { afficherTop3Cat } from "./Views/view.js";
-import { afficherFavoris} from "./Views/view.js";
 
 const SOURCE_ETOILE_VIDE = "/images/etoile-vide.svg";
 const SOURCE_ETOILE_PLEINE = "/images/etoile-pleine.svg";
@@ -11,28 +7,13 @@ const CLE_FAVORIS = "steam-favoris";
 
 const favoris = JSON.parse(localStorage.getItem(CLE_FAVORIS) || "[]");
 afficherFavoris(favoris);
+reinitialiserCategories();
 
-// Gestion de la recherche
-
-// A chaque lettre rentrée on vérifie si le champ est vide, si il l'est on empêche le clique sur le btn recherche et sur le bouton favori
-
-view.champRecherche.addEventListener("keyup", (evt) => {
-
-  if (view.champRecherche.value.trim() !== "") {
-    view.btnLancerRecherche.disabled = false;
-    view.btnFavoris.disabled = false;
-  } else {
-    view.btnLancerRecherche.disabled = true;
-    view.btnFavoris.disabled = true;
-  }
-
+view.champRecherche.addEventListener("keyup", () => {
+  const actif = view.champRecherche.value.trim() !== "";
+  view.btnLancerRecherche.disabled = !actif;
+  view.btnFavoris.disabled = !actif;
 });
-
-
-
-//-----------------------------call favoris quand clic-----------------------------
-
-
 
 view.listeFavoris.addEventListener("click", function (event) {
   const favoriClique = event.target.closest("li");
@@ -53,11 +34,6 @@ view.listeFavoris.addEventListener("click", function (event) {
   view.btnLancerRecherche.click();
 });
 
-
-
-//-----------------------------recup jeux-----------------------------
-
-
 async function recupererJeux(steamId) {
   const response = await fetch(`api.php?action=owned-games&steamid=${encodeURIComponent(steamId)}`);
 
@@ -67,10 +43,6 @@ async function recupererJeux(steamId) {
 
   return await response.json();
 }
-
-
-//-----------------------------recup profil-----------------------------
-
 
 async function recupererProfil(steamId) {
   const response = await fetch(`api.php?action=profile&steamid=${encodeURIComponent(steamId)}`);
@@ -82,11 +54,6 @@ async function recupererProfil(steamId) {
   return await response.json();
 }
 
-
-//-----------------------------recup details jeu-----------------------------
-
-
-
 async function recupererDetailsJeu(appid) {
   const response = await fetch(`api.php?action=app-details&appid=${encodeURIComponent(appid)}`);
 
@@ -97,21 +64,33 @@ async function recupererDetailsJeu(appid) {
   return await response.json();
 }
 
-
-
 view.btnLancerRecherche.addEventListener("click", async function () {
-
   const steamId = view.champRecherche.value.trim();
 
-  try {
-    const reponseTotaleParId = await recupererJeux(steamId);
+  if (steamId === "") {
+    return;
+  }
 
-    if (!reponseTotaleParId.response || Object.keys(reponseTotaleParId.response).length === 0) {
-      console.log("ID invalide ou aucun jeu");
+  afficherChargement();
+  reinitialiserCategories();
+
+  try {
+    const profil = await recupererProfil(steamId);
+
+    if (!profil) {
+      afficherErreur("Aucun profil Steam trouve pour cet identifiant.");
       return;
     }
 
-    const jeuxPossedes = reponseTotaleParId.response.games.map(jeu =>
+    const reponseTotaleParId = await recupererJeux(steamId);
+    const jeuxApi = reponseTotaleParId.response?.games || [];
+
+    if (jeuxApi.length === 0) {
+      afficherErreur("Bibliotheque privee, vide ou identifiant Steam invalide.");
+      return;
+    }
+
+    const jeuxPossedes = jeuxApi.map((jeu) =>
       new Jeu(
         jeu.appid,
         jeu.name,
@@ -124,7 +103,10 @@ view.btnLancerRecherche.addEventListener("click", async function () {
       .sort((a, b) => b.getPlaytimeforever() - a.getPlaytimeforever())
       .slice(0, 6);
 
-    console.log(top6Jeux);
+    if (top6Jeux.length === 0) {
+      afficherErreur("Aucun jeu avec du temps de jeu visible pour ce compte.");
+      return;
+    }
 
     afficherJeuxProposes(top6Jeux);
 
@@ -133,47 +115,37 @@ view.btnLancerRecherche.addEventListener("click", async function () {
     for (const jeu of top6Jeux) {
       const details = await recupererDetailsJeu(jeu.getAppid());
 
-      if (details.genres && details.genres.length > 0) {
+      if (details?.genres && details.genres.length > 0) {
         const categoriePrincipale = details.genres[0].description;
 
         if (occurrencesCategories[categoriePrincipale]) {
           occurrencesCategories[categoriePrincipale].count++;
         } else {
-          occurrencesCategories[categoriePrincipale] = {
-            count: 1
-          };
+          occurrencesCategories[categoriePrincipale] = { count: 1 };
         }
       }
     }
-
-    console.log(occurrencesCategories);
 
     const top3Categories = Object.entries(occurrencesCategories)
       .sort((a, b) => b[1].count - a[1].count)
       .slice(0, 3);
 
-    afficherTop3Cat(top3Categories);
-
-  
-    
+    await afficherTop3Cat(top3Categories);
   } catch (error) {
     console.error("Erreur API :", error);
+    afficherErreur("Une erreur est survenue pendant le chargement des donnees Steam.");
+  } finally {
+    masquerChargement();
   }
-
 });
 
-// Permet de mettre en favoris
-
 view.btnFavoris.addEventListener("click", async function () {
-
   const etoile = view.etoileFavoris;
   const steamId = view.champRecherche.value.trim();
 
-  if(etoile.src.includes(SOURCE_ETOILE_VIDE)){
-    etoile.src = SOURCE_ETOILE_PLEINE;
-  } else {
-    etoile.src = SOURCE_ETOILE_VIDE;
-  }
+  etoile.src = etoile.src.includes(SOURCE_ETOILE_VIDE)
+    ? SOURCE_ETOILE_PLEINE
+    : SOURCE_ETOILE_VIDE;
 
   if (steamId === "") {
     return;
@@ -183,13 +155,14 @@ view.btnFavoris.addEventListener("click", async function () {
     const profil = await recupererProfil(steamId);
 
     if (!profil) {
+      afficherErreur("Impossible d'ajouter ce favori : profil introuvable.");
       return;
     }
 
     const profilFavori = {
       steamid: profil.steamid,
       personaname: profil.personaname,
-      avatarfull: profil.avatarfull
+      avatarfull: profil.avatarfull,
     };
 
     const dejaPresent = favoris.some((fav) => fav.steamid === profilFavori.steamid);
@@ -202,8 +175,6 @@ view.btnFavoris.addEventListener("click", async function () {
     afficherFavoris(favoris);
   } catch (error) {
     console.error("Erreur favoris :", error);
+    afficherErreur("Impossible d'ajouter ce favori pour le moment.");
   }
-  
 });
-
-

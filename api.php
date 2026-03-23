@@ -7,23 +7,39 @@ $steamApiKey = '847C531FE8FB222847926854D016ABA7';
 $action = $_GET['action'] ?? '';
 
 $genreToTag = [
-    'Action' => 19,
-    'Aventure' => 21,
-    'Adventure' => 21,
-    'Indépendant' => 492,
-    'Independent' => 492,
-    'Indie' => 492,
-    'RPG' => 122,
-    'Stratégie' => 9,
-    'Strategy' => 9,
-    'Simulation' => 599,
-    'Course' => 699,
-    'Racing' => 699,
-    'Sport' => 701,
-    'Sports' => 701,
-    'Casual' => 597,
-    'Accès anticipé' => 493,
-    'Early Access' => 493,
+    'action' => 19,
+    'aventure' => 21,
+    'adventure' => 21,
+    'independant' => 492,
+    'independent' => 492,
+    'indie' => 492,
+    'rpg' => 122,
+    'strategie' => 9,
+    'strategy' => 9,
+    'simulation' => 599,
+    'course' => 699,
+    'racing' => 699,
+    'sport' => 701,
+    'sports' => 701,
+    'casual' => 597,
+    'acces anticipe' => 493,
+    'early access' => 493,
+    'free to play' => 113,
+    'gratuit' => 113,
+    'massively multiplayer' => 128,
+    'multijoueur massif' => 128,
+    'violent' => 4667,
+    'horror' => 1667,
+    'horreur' => 1667,
+    'anime' => 4085,
+    'survival' => 1662,
+    'sandbox' => 3810,
+    'open world' => 1695,
+    'monde ouvert' => 1695,
+    'fps' => 1663,
+    'story rich' => 1742,
+    'narratif' => 1742,
+    'puzzle' => 1664,
 ];
 
 try {
@@ -31,21 +47,23 @@ try {
         case 'owned-games':
             $steamId = requireQuery('steamid');
             respond(fetchJson(
-                "https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key={$steamApiKey}&steamid={$steamId}&include_appinfo=true&include_played_free_games=true"
+                "https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key={$steamApiKey}&steamid=" . rawurlencode($steamId) . "&include_appinfo=true&include_played_free_games=true"
             ));
             break;
 
         case 'profile':
             $steamId = requireQuery('steamid');
             $payload = fetchJson(
-                "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={$steamApiKey}&steamids={$steamId}"
+                "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key={$steamApiKey}&steamids=" . rawurlencode($steamId)
             );
             respond($payload['response']['players'][0] ?? null);
             break;
 
         case 'app-details':
             $appId = requireQuery('appid');
-            $payload = fetchJson("https://store.steampowered.com/api/appdetails?appids={$appId}&l=french");
+            $payload = fetchJson(
+                "https://store.steampowered.com/api/appdetails?appids=" . rawurlencode($appId) . "&l=french"
+            );
             $details = $payload[$appId] ?? null;
 
             if (!$details || empty($details['success'])) {
@@ -57,7 +75,7 @@ try {
 
         case 'top-category':
             $genre = requireQuery('genre');
-            $tagId = $genreToTag[$genre] ?? null;
+            $tagId = $genreToTag[normalizeGenre($genre)] ?? null;
 
             if ($tagId === null) {
                 respond(['items' => []]);
@@ -85,7 +103,7 @@ function requireQuery(string $key): string
         throw new RuntimeException("Parametre manquant : {$key}");
     }
 
-    return rawurlencode($value);
+    return trim($value);
 }
 
 function fetchJson(string $url): array
@@ -117,4 +135,13 @@ function respond($payload): void
 {
     echo json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     exit;
+}
+
+function normalizeGenre(string $genre): string
+{
+    $genre = trim($genre);
+    $genre = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $genre) ?: $genre;
+    $genre = strtolower($genre);
+
+    return preg_replace('/\s+/', ' ', $genre) ?? $genre;
 }
