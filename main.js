@@ -37,13 +37,18 @@ async function recupererJeux(steamId) {
 }
 
 async function recupererDetailsJeu(appid) {
+  const url = `https://store.steampowered.com/api/appdetails?appids=${appid}&l=french`;
+
   const response = await fetch(
-    `https://store.steampowered.com/api/appdetails?appids=${appid}&l=french`
+    `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`
   );
 
   const data = await response.json();
-  return data[appid].data;
+  const vraiJSON = JSON.parse(data.contents);
+
+  return vraiJSON[appid].data;
 }
+
 
 
 view.btnLancerRecherche.addEventListener("click", async function () {
@@ -122,48 +127,5 @@ view.btnFavoris.addEventListener("click", function () {
 
 import { afficherJeuxProposes } from "./Views/view.js";
 
-const jeuxTest = [
-  {
-    appid: 570,
-    name: "Dota 2",
-    categorie: "MOBA"
-  },
-  {
-    appid: 730,
-    name: "Counter-Strike 2",
-    categorie: "FPS"
-  },
-  {
-    appid: 440,
-    name: "Team Fortress 2",
-    categorie: "Action"
-  },
-  {
-    appid: 440,
-    name: "Team Fortress 2",
-    categorie: "Action"
-  },
-  {
-    appid: 440,
-    name: "Team Fortress 2",
-    categorie: "Action"
-  },
-  {
-    appid: 440,
-    name: "Team Fortress 2",
-    categorie: "Action"
-  },
-  {
-    appid: 440,
-    name: "Team Fortress 2",
-    categorie: "Action"
-  },
-  {
-    appid: 440,
-    name: "Team Fortress 2",
-    categorie: "Action"
-  }
-];
-
-afficherJeuxProposes(jeuxTest);
+afficherJeuxProposes(top15Jeux);
 
