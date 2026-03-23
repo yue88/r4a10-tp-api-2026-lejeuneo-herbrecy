@@ -22,16 +22,19 @@ view.champRecherche.addEventListener("keyup", (evt) => {
 // Permet de faire l'appel API lors du clique sur la loupe
 
 async function recupererJeux(steamId) {
-  const response = await fetch(`https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=847C531FE8FB222847926854D016ABA7&steamid=${steamId}&include_appinfo=true&include_played_free_games=true`);
-  const data = await response.json();
-  return data;
+  const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=847C531FE8FB222847926854D016ABA7&steamid=${steamId}&include_appinfo=true&include_played_free_games=true`)}`)
+                    .then(response => {
+                      if (response.ok) return response.json()
+                      throw new Error('Network response was not ok.')
+                    })
+                    .then(data => console.log(data.contents));
 }
 
 view.btnLancerRecherche.addEventListener("click", async function () {
 
   const steamId = view.champRecherche.value.trim();
 
-  const reponseTotaleParId = recupererJeux(steamId);
+  const reponseTotaleParId = await recupererJeux(steamId);
 
   if(Object.keys(reponseTotaleParId.response).length === 0){
     // Action de si l'id est mauvais
