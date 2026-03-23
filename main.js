@@ -34,24 +34,28 @@ view.btnLancerRecherche.addEventListener("click", async function () {
 
   const steamId = view.champRecherche.value.trim();
 
-  const reponseTotaleParId = await recupererJeux(steamId);
+  try {
+    const reponseTotaleParId = await recupererJeux(steamId);
 
-  if(Object.keys(reponseTotaleParId.response).length === 0){
-    // Action de si l'id est mauvais
-  } else {
-    const jeuxPossedes = reponseTotaleParId.response.games.map(jeu => {
-      return new Jeu(
+    if (!reponseTotaleParId.response || Object.keys(reponseTotaleParId.response).length === 0) {
+      console.log("ID invalide ou aucun jeu");
+      return;
+    }
+
+    const jeuxPossedes = reponseTotaleParId.response.games.map(jeu =>
+      new Jeu(
         jeu.appid,
         jeu.name,
         jeu.playtime_forever,
         jeu.img_icon_url
-      );
-    });
+      )
+    );
 
     console.log(jeuxPossedes);
-  }
 
-  
+  } catch (error) {
+    console.error("Erreur API :", error);
+  }
 
 });
 
