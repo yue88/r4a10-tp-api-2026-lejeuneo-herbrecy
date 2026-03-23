@@ -141,7 +141,16 @@ header {
 #btn-favoris:hover{
   cursor: pointer;
   background-color: var(--main-blue);
-  border: 1px solid white;
+  border: 1px solid var(--main-blue);
+}
+
+#btn-favoris:not(:disabled) {
+  background-color: var(--main-blue);
+  border-color: var(--main-blue);
+}
+
+#bloc-recherche:focus-within #btn-favoris {
+  border-color: var(--main-blue);
 }
 
 #bloc-resultats {
@@ -215,10 +224,6 @@ header {
   transform: translateX(3px);
   border-color: rgba(90, 208, 255, 0.3);
   background: rgba(90, 208, 255, 0.08);
-}
-
-#liste-favoris li span {
-  text-decoration: underline;
 }
 
 #liste-favoris li span:hover {
@@ -365,6 +370,40 @@ header {
   margin: 0;
   color: var(--text-soft);
 }
+
+
+.fav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 4px 0;
+  text-decoration: none;
+}
+
+.fav-item img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid rgba(25, 155, 255, 0.5);
+  object-fit: cover;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+}
+
+.nom-profil-fav {
+  all: unset;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.01em;
+  text-decoration: none; 
+  cursor: pointer;
+}
+
+#liste-favoris li:hover .nom-profil-fav {
+  color: #9fd8ff;
+}
+
 
 
 /* Media-query pour gérer l'affichage sur petit écran */

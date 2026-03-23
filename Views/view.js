@@ -2,8 +2,6 @@
  * Objet constant représentant la vue.
  */
 export const view = {
-  
-
     btnLancerRecherche: document.querySelector("#btn-lancer-recherche"),
 
     champRecherche: document.querySelector("#section-recherche input[type=text]"),
@@ -12,14 +10,15 @@ export const view = {
 
     etoileFavoris: document.querySelector("#etoile"),
 
-    blocResultats: document.querySelector("#bloc-resultats"),
-
     categorie1: document.querySelector("#categorie-1"),
 
     categorie2: document.querySelector("#categorie-2"),
 
-    categorie3: document.querySelector("#categorie-3")
+    categorie3: document.querySelector("#categorie-3"),
 
+    blocResultats: document.querySelector("#bloc-resultats"),
+
+    listeFavoris: document.querySelector("#liste-favoris")
 };
 
 
@@ -82,4 +81,19 @@ export async function afficherTop3Cat(categories) {
       console.error(`Erreur API catégorie ${nom}:`, error);
     }
   }
+}
+
+export function afficherFavoris(fav) {
+  view.listeFavoris.innerHTML = "";
+
+  fav.forEach((profil) => {
+    view.listeFavoris.innerHTML += `
+      <li data-steamid="${profil.steamid}">
+        <span class="fav-item">
+          <img src="${profil.avatarfull}" alt="Avatar de ${profil.personaname}" width="32" height="32">
+          <span class="nom-profil-fav">${profil.personaname}</span>
+        </span>
+      </li>
+    `;
+  });
 }
