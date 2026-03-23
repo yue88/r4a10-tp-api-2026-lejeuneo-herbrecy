@@ -7,10 +7,10 @@ export class Jeu {
 
 
     constructor(appid, name, playtimeForever, img_icon_url) {
-        this.appid = appid;
-        this.name = name;
-        this.playtimeForever = playtimeForever;
-        this.img_icon_url = img_icon_url;
+        this.#appid = appid;
+        this.#name = name;
+        this.#playtimeforever = playtimeForever;
+        this.#img_icon_url = img_icon_url;
     }
 
     getAppid() {
