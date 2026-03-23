@@ -113,11 +113,16 @@ export async function afficherTop3Cat(categories) {
 
       itemsAffiches.slice(0, 5).forEach((jeu) => {
         const imageUrl = jeu.image_url || jeu.logo || "";
+        const imageFallbackUrl = jeu.image_fallback_url || jeu.logo || "";
         const lienSteam = jeu.steam_url || `https://store.steampowered.com/search/?term=${encodeURIComponent(jeu.name)}`;
 
         container.innerHTML += `
           <article class="carte-jeu">
-            <img src="${imageUrl}" alt="Image de ${jeu.name}">
+            <img
+              src="${imageUrl}"
+              alt="Image de ${jeu.name}"
+              onerror="if (this.src !== '${imageFallbackUrl}') this.src='${imageFallbackUrl}'"
+            >
             <h3>${jeu.name}</h3>
             <a href="${lienSteam}" target="_blank" rel="noopener noreferrer">Voir sur Steam</a>
           </article>

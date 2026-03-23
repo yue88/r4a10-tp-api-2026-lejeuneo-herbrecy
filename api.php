@@ -164,10 +164,12 @@ function enrichSearchItems(array $payload): array
         $appId = $item['id'] ?? $item['appid'] ?? null;
 
         if ($appId !== null) {
-            $item['image_url'] = "https://cdn.cloudflare.steamstatic.com/steam/apps/{$appId}/header.jpg";
+            $item['image_url'] = "https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/{$appId}/capsule_616x353.jpg";
+            $item['image_fallback_url'] = "https://cdn.cloudflare.steamstatic.com/steam/apps/{$appId}/header.jpg";
             $item['steam_url'] = "https://store.steampowered.com/app/{$appId}";
         } else {
             $item['image_url'] = $item['logo'] ?? '';
+            $item['image_fallback_url'] = $item['logo'] ?? '';
             $item['steam_url'] = "https://store.steampowered.com/search/?term=" . rawurlencode((string) ($item['name'] ?? ''));
         }
     }
