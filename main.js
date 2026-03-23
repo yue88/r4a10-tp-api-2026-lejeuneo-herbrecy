@@ -1,4 +1,5 @@
 import { view } from './Views/view.js';
+import { Jeu } from "./Model/modeleJeu.js";
 
 const SOURCE_ETOILE_VIDE = "/images/etoile-vide.svg";
 const SOURCE_ETOILE_PLEINE = "/images/etoile-pleine.svg";
@@ -24,7 +25,7 @@ view.champRecherche.addEventListener("keyup", (evt) => {
 async function recupererJeux(steamId) {
   const response = await fetch(
     `https://api.allorigins.win/get?url=${encodeURIComponent(
-      `https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=...&steamid=${steamId}&include_appinfo=true&include_played_free_games=true`
+      `https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=847C531FE8FB222847926854D016ABA7&steamid=${steamId}&include_appinfo=true&include_played_free_games=true`
     )}`
   );
 
@@ -42,19 +43,19 @@ view.btnLancerRecherche.addEventListener("click", async function () {
   try {
     const reponseTotaleParId = await recupererJeux(steamId);
 
-  if (!reponseTotaleParId || !reponseTotaleParId.response) {
-    console.log("ID invalide ou aucun jeu");
-    return;
-  }
+    if (!reponseTotaleParId.response || Object.keys(reponseTotaleParId.response).length === 0) {
+      console.log("ID invalide ou aucun jeu");
+      return;
+    }
 
-  const jeuxPossedes = reponseTotaleParId.response.games.map(jeu =>
-    new Jeu(
-      jeu.appid,
-      jeu.name,
-      jeu.playtime_forever,
-      jeu.img_icon_url
-    )
-  );
+    const jeuxPossedes = reponseTotaleParId.response.games.map(jeu =>
+      new Jeu(
+        jeu.appid,
+        jeu.name,
+        jeu.playtime_forever,
+        jeu.img_icon_url
+      )
+    );
 
     console.log(jeuxPossedes);
 
@@ -77,55 +78,6 @@ view.btnFavoris.addEventListener("click", function () {
   }
   
 });
-
-
-import { afficherJeuxProposes } from "./Views/view.js";
-
-const jeuxTest = [
-  {
-    appid: 570,
-    name: "Dota 2",
-    categorie: "MOBA"
-  },
-  {
-    appid: 730,
-    name: "Counter-Strike 2",
-    categorie: "FPS"
-  },
-  {
-    appid: 440,
-    name: "Team Fortress 2",
-    categorie: "Action"
-  },
-  {
-    appid: 440,
-    name: "Team Fortress 2",
-    categorie: "Action"
-  },
-  {
-    appid: 440,
-    name: "Team Fortress 2",
-    categorie: "Action"
-  },
-  {
-    appid: 440,
-    name: "Team Fortress 2",
-    categorie: "Action"
-  },
-  {
-    appid: 440,
-    name: "Team Fortress 2",
-    categorie: "Action"
-  },
-  {
-    appid: 440,
-    name: "Team Fortress 2",
-    categorie: "Action"
-  }
-];
-
-afficherJeuxProposes(jeuxTest);
-
 
 
 

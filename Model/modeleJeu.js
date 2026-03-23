@@ -1,4 +1,4 @@
-class Jeu {
+export class Jeu {
 
     #appid;
     #name;
