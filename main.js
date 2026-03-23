@@ -28,7 +28,7 @@ async function recupererJeux(steamId) {
 const url = `https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=847C531FE8FB222847926854D016ABA7&steamid=${steamId}&include_appinfo=true&include_played_free_games=true`;
 
   const response = await fetch(
-    `https://cors.isomorphic-git.org/${url}`
+    `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`
   );
 
   const data = await response.json();
@@ -40,9 +40,9 @@ const url = `https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=8
 
 async function recupererDetailsJeu(appid) {
   const url = `https://store.steampowered.com/api/appdetails?appids=${appid}&l=french`;
-  
+
   const response = await fetch(
-    `https://cors.isomorphic-git.org/${url}`
+    `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`
   );
 
   const data = await response.json();
