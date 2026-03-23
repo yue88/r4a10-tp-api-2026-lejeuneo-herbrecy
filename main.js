@@ -96,16 +96,6 @@ view.btnLancerRecherche.addEventListener("click", async function () {
       }
     }
 
-    
-
-afficherJeuxProposes(top15Jeux);
-
-
-
-    console.log(occurrencesCategories);
-
-
-
 
 console.log(occurrencesCategories);
 
