@@ -34,7 +34,23 @@ https://store.steampowered.com/api/appdetails?appids=APPID&l=french
 recherche des jeux d'actions :
 https://store.steampowered.com/search/results/?json=1&filter=topsellers&category1=998&tags=19&supportedlang=french&hidef2p=1&page=1
 
-//----------------------------SteamWebAPI-----------------------------//
+
+Image du jeu :
+https://cdn.cloudflare.steamstatic.com/steam/apps/APPID/header.jpg
+
+lien du jeu
+https://store.steampowered.com/app/APPID
+
+
+
+
+
+
+
+
+
+//------------------------X---NON UTILISÉ---X-------------------------//
+//------------------------X---SteamWebAPI---X-------------------------//
 
 SAR2GOHT4LEVIOTW -> free account - limité à 5...
 
@@ -53,17 +69,12 @@ https://www.steamwebapi.com/steam/api/inventory?key=SAR2GOHT4LEVIOTW&steam_id=76
 Item :
 https://www.steamwebapi.com/steam/api/item?key=SAR2GOHT4LEVIOTW&market_hash_name=Gamma Case&game=csgo
 
-
-
-
 documentations : 
 
 https://www.steamwebapi.com/api/steam/documentation
 https://developer.valvesoftware.com/wiki/Steam_Web_API
 
 Exemples réponses : 
-
-
 https://www.steamwebapi.com/explore/api/profile?key=SAR2GOHT4LEVIOTW&search=Yume_88
 
 [
