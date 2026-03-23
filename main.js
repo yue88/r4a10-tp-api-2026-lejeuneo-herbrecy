@@ -80,6 +80,8 @@ view.btnLancerRecherche.addEventListener("click", async function () {
 
     console.log(top15Jeux);
 
+    afficherJeuxProposes(top15Jeux);
+
     const occurrencesCategories = {};
 
     for (const jeu of top15Jeux) {

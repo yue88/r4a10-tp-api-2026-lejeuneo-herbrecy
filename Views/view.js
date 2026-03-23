@@ -22,14 +22,13 @@ export function afficherJeuxProposes(jeux) {
     view.blocResultats.innerHTML = "";
 
     jeux.forEach((jeu) => {
-    const imageUrl = `https://cdn.cloudflare.steamstatic.com/steam/apps/${jeu.appid}/header.jpg`;
-    const lienSteam = `https://store.steampowered.com/app/${jeu.appid}`;
+    const imageUrl = `https://cdn.cloudflare.steamstatic.com/steam/apps/${jeu.getAppid()}/header.jpg`;
+    const lienSteam = `https://store.steampowered.com/app/${jeu.getAppid()}`;
 
     view.blocResultats.innerHTML += `
             <article class="carte-jeu">
-                <img src="${imageUrl}" alt="Image de ${jeu.name}">
-                <h3>${jeu.name}</h3>
-                <p>${jeu.categorie}</p>
+                <img src="${imageUrl}" alt="Image de ${jeu.getName()}">
+                <h3>${jeu.getName()}</h3>
                 <a href="${lienSteam}" target="_blank">Voir sur Steam</a>
             </article>
     `;
