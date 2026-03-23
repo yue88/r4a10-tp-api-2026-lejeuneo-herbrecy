@@ -36,6 +36,16 @@ async function recupererJeux(steamId) {
   return vraiJSON;
 }
 
+async function recupererDetailsJeu(appid) {
+  const response = await fetch(
+    `https://store.steampowered.com/api/appdetails?appids=${appid}&l=french`
+  );
+
+  const data = await response.json();
+  return data[appid].data;
+}
+
+
 view.btnLancerRecherche.addEventListener("click", async function () {
 
   const steamId = view.champRecherche.value.trim();
@@ -62,6 +72,30 @@ view.btnLancerRecherche.addEventListener("click", async function () {
       .slice(0, 15);
 
     console.log(top15Jeux);
+
+    const occurrencesCategories = {};
+
+    for (const jeu of top15Jeux) {
+      const details = await recupererDetailsJeu(jeu.getAppid());
+
+      if (details.genres && details.genres.length > 0) {
+        const categoriePrincipale = details.genres[0].description;
+
+        if (occurrencesCategories[categoriePrincipale]) {
+          occurrencesCategories[categoriePrincipale]++;
+        } else {
+          occurrencesCategories[categoriePrincipale] = 1;
+        }
+      }
+    }
+
+    console.log(occurrencesCategories);
+
+
+
+
+console.log(occurrencesCategories);
+
 
   } catch (error) {
     console.error("Erreur API :", error);
