@@ -1,6 +1,8 @@
 import { view } from './Views/view.js';
 import { Jeu } from "./Model/modeleJeu.js";
 
+import { afficherJeuxProposes } from "./Views/view.js";
+
 const SOURCE_ETOILE_VIDE = "/images/etoile-vide.svg";
 const SOURCE_ETOILE_PLEINE = "/images/etoile-pleine.svg";
 
@@ -94,6 +96,12 @@ view.btnLancerRecherche.addEventListener("click", async function () {
       }
     }
 
+    
+
+afficherJeuxProposes(top15Jeux);
+
+
+
     console.log(occurrencesCategories);
 
 
@@ -122,10 +130,4 @@ view.btnFavoris.addEventListener("click", function () {
   
 });
 
-
-
-
-import { afficherJeuxProposes } from "./Views/view.js";
-
-afficherJeuxProposes(top15Jeux);
 
