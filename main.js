@@ -2,6 +2,7 @@ import { view } from './Views/view.js';
 import { Jeu } from "./Model/modeleJeu.js";
 
 import { afficherJeuxProposes } from "./Views/view.js";
+import { afficherTop3Cat } from "./Views/view.js";
 
 const SOURCE_ETOILE_VIDE = "/images/etoile-vide.svg";
 const SOURCE_ETOILE_PLEINE = "/images/etoile-pleine.svg";
@@ -73,33 +74,45 @@ view.btnLancerRecherche.addEventListener("click", async function () {
       )
     );
 
-    const top15Jeux = jeuxPossedes
+    const top6Jeux = jeuxPossedes
       .filter((jeu) => jeu.getPlaytimeforever() > 0)
       .sort((a, b) => b.getPlaytimeforever() - a.getPlaytimeforever())
-      .slice(0, 15);
+      .slice(0, 6);
 
-    console.log(top15Jeux);
+    console.log(top6Jeux);
+
+    afficherJeuxProposes(top6Jeux);
 
     const occurrencesCategories = {};
 
-    for (const jeu of top15Jeux) {
+    for (const jeu of top6Jeux) {
       const details = await recupererDetailsJeu(jeu.getAppid());
 
       if (details.genres && details.genres.length > 0) {
         const categoriePrincipale = details.genres[0].description;
+        const categorieId = details.genres[0].id;
 
         if (occurrencesCategories[categoriePrincipale]) {
-          occurrencesCategories[categoriePrincipale]++;
+          occurrencesCategories[categoriePrincipale].count++;
         } else {
-          occurrencesCategories[categoriePrincipale] = 1;
+          occurrencesCategories[categoriePrincipale] = {
+            count: 1,
+            idCategorie: categorieId
+          };
         }
       }
     }
 
+    console.log(occurrencesCategories);
 
-console.log(occurrencesCategories);
+    const top3Categories = Object.entries(occurrencesCategories)
+      .sort((a, b) => b[1].count - a[1].count)
+      .slice(0, 3);
 
+    afficherTop3Cat(top3Categories);
 
+  
+    
   } catch (error) {
     console.error("Erreur API :", error);
   }
