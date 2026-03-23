@@ -68,8 +68,7 @@ export async function afficherTop3Cat(categories) {
 
       items.slice(0, 5).forEach((jeu, index) => {
 
-        const imageUrl = `https://cdn.cloudflare.steamstatic.com/steam/apps/${jeu.getAppid()}/header.jpg`;
-
+        const imageUrl = jeu.logo;
         const lienSteam = `https://store.steampowered.com/search/?term=${encodeURIComponent(jeu.name)}`;
 
         container.innerHTML += `
