@@ -21,20 +21,43 @@ view.champRecherche.addEventListener("keyup", (evt) => {
 
 // Permet de faire l'appel API lors du clique sur la loupe
 
+async function recupererJeux(steamId) {
+  const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=847C531FE8FB222847926854D016ABA7&steamid=${steamId}&include_appinfo=true&include_played_free_games=true`)}`)
+                    .then(response => {
+                      if (response.ok) return response.json()
+                      throw new Error('Network response was not ok.')
+                    })
+                    .then(data => console.log(data.contents));
+}
+
 view.btnLancerRecherche.addEventListener("click", async function () {
 
-  const recherche = view.champRecherche.value.trim();
+  const steamId = view.champRecherche.value.trim();
 
-  const url = `https://www.steamwebapi.com/explore/api/profile?key=SAR2GOHT4LEVIOTW&search=${recherche}`;
+  try {
+    const reponseTotaleParId = await recupererJeux(steamId);
 
-  fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`)
-    .then(response => {
-      if (response.ok) return response.json()
-      throw new Error('Network response was not ok.')
-    })
-    .then(data => console.log(data.contents));
+    if (!reponseTotaleParId.response || Object.keys(reponseTotaleParId.response).length === 0) {
+      console.log("ID invalide ou aucun jeu");
+      return;
+    }
 
-  });
+    const jeuxPossedes = reponseTotaleParId.response.games.map(jeu =>
+      new Jeu(
+        jeu.appid,
+        jeu.name,
+        jeu.playtime_forever,
+        jeu.img_icon_url
+      )
+    );
+
+    console.log(jeuxPossedes);
+
+  } catch (error) {
+    console.error("Erreur API :", error);
+  }
+
+});
 
 // Permet de mettre en favoris
 
